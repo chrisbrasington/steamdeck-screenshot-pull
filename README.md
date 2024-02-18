@@ -25,7 +25,7 @@ This Python script allows you to search for a game on Steam using the Steam API 
 }
 ```
 
-Replace `"YourSteamID"` with your actual Steam ID.
+Replace `YourSteamID` with your actual Steam ID and `hostname` with you steam deck machine name.
 
 ## Usage
 
