@@ -42,3 +42,14 @@ Enter the name of the game you want to search for when prompted. If the game is 
 - Make sure your Steam Deck is accessible via SSH and the specified user and hostname are correct in the configuration file.
 - The Steam API key is not required as this script only uses the public GetAppList API endpoint.
 - You can obtain your Steam ID from [SteamIDFinder](https://www.steamidfinder.com/).
+
+## Sample Run
+
+```bash
+Enter the name of the game: ultros demo
+App ID for 'ultros demo': 2709040
+deck@cb-steamdeck's password: 
+20240218005056_1.jpg                                                 100%  250KB   2.7MB/s   00:00    
+20240218004334_1.jpg                                                 100%  370KB   4.6MB/s   00:00    
+Screenshots copied successfully!
+```
