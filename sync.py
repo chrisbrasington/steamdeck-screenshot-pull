@@ -3,6 +3,7 @@ import os
 import json
 import requests
 import subprocess
+import sys
 
 def search_game_id(game_name):
     # Steam API endpoint for searching games
@@ -51,8 +52,28 @@ def read_config():
 
 # Example usage
 if __name__ == "__main__":
-    game_name = input("Enter the name of the game: ")
-    app_id = search_game_id(game_name)
+
+    # if first arg exists use as game_name
+    game_name = sys.argv[1] if len(sys.argv) > 1 else None
+
+    if not game_name:
+        game_name = input("Enter the name of the game: ")
+    
+    # if game_name is an integer
+    app_id = None 
+    isInt = False
+    try:
+        game_name_int = int(game_name)
+        app_id = game_name_int
+        isInt = True
+    except ValueError:
+        pass
+
+    if not isInt:
+        app_id = search_game_id(game_name)
+
+    if app_id == 455590:
+        game_name = "morrowind"
 
     if app_id:
         print(f"App ID for '{game_name}': {app_id}")
