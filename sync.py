@@ -27,15 +27,21 @@ def search_game_id(game_name):
         return None
 
 def copy_screenshots(game_name, app_id, user_id, ssh_user, hostname):
+
+    print(f'Copying {game_name}: {app_id} from {hostname}')
+
     # Destination directory for screenshots
     destination_dir = f"/home/chris/Pictures/Screenshots/\"{game_name}\""
 
     # SCP command to copy screenshots from Steam Deck to local machine
-    scp_command = f"scp -r {ssh_user}@{hostname}:/home/{ssh_user}/.steam/steam/userdata/{user_id}/760/remote/{app_id}/screenshots/ {destination_dir}"
+    # scp_command = f"scp -r {ssh_user}@{hostname}:/home/{ssh_user}/.steam/steam/userdata/{user_id}/760/remote/{app_id}/screenshots/ {destination_dir}"
+    rsync_command = f"rsync -avz --ignore-existing {ssh_user}@{hostname}:/home/{ssh_user}/.steam/steam/userdata/{user_id}/760/remote/{app_id}/screenshots/ {destination_dir}"
+
+    print(rsync_command)
 
     # Execute the SCP command
     try:
-        subprocess.run(scp_command, shell=True, check=True)
+        subprocess.run(rsync_command, shell=True, check=True)
         print("Screenshots copied successfully!")
     except subprocess.CalledProcessError as e:
         print("Error copying screenshots:", e)
@@ -50,10 +56,8 @@ def read_config():
         print("Config file not found.")
         return None
 
-# Example usage
-if __name__ == "__main__":
-
-    app_id = None 
+def main():
+    app_ids = [] 
     isInt = False
 
     # if first arg exists use as game_name
@@ -61,26 +65,31 @@ if __name__ == "__main__":
 
     if not game_name:
         game_name = input("Enter the name of the game: ")
-    elif game_name == 'morrowind':
-        app_id = 455590
+    elif game_name.lower() == 'morrowind':
+        app_ids = [455590, 9082020]
         isInt = True
-    
+
     try:
         game_name_int = int(game_name)
-        app_id = game_name_int
+        app_ids = [game_name_int]
         isInt = True
     except ValueError:
         pass
 
     if not isInt:
-        app_id = search_game_id(game_name)
+        app_ids = [search_game_id(game_name)]
 
-    if app_id == 455590:
+    if 455590 in app_ids:
         game_name = "morrowind"
 
-    if app_id:
-        print(f"App ID for '{game_name}': {app_id}")
+    if app_ids:
         config = read_config()
-        copy_screenshots(game_name, app_id, config['user_id'], config['ssh_user'], config['hostname'])
+        for app_id in app_ids:
+            print(f"App ID for '{game_name}': {app_id}")
+            copy_screenshots(game_name, app_id, config['user_id'], config['ssh_user'], config['hostname'])
     else:
         print(f"Game '{game_name}' not found.")
+
+if __name__ == "__main__":
+    main()
+
