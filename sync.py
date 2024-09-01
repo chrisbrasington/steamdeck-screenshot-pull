@@ -53,15 +53,18 @@ def read_config():
 # Example usage
 if __name__ == "__main__":
 
+    app_id = None 
+    isInt = False
+
     # if first arg exists use as game_name
     game_name = sys.argv[1] if len(sys.argv) > 1 else None
 
     if not game_name:
         game_name = input("Enter the name of the game: ")
+    elif game_name == 'morrowind':
+        app_id = 455590
+        isInt = True
     
-    # if game_name is an integer
-    app_id = None 
-    isInt = False
     try:
         game_name_int = int(game_name)
         app_id = game_name_int
