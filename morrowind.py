@@ -3,7 +3,7 @@ import subprocess
 
 def main():
     # Command to run sync.py with the "morrowind" argument
-    command = ["python", "sync.py", "455590"]
+    command = ["python", "sync.py", "morrowind"]
 
     try:
         # Run the command and capture the output
